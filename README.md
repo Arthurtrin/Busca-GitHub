@@ -18,6 +18,57 @@ Quando um usuário não é encontrado ou ocorre algum problema na requisição, 
 
 ---
 
+## 📦 Como usar no seu próprio projeto
+
+Esta aplicação pode ser facilmente reutilizada em outros projetos Java que precisem consumir dados de usuários do GitHub.
+
+### 1️⃣ Pré-requisitos
+
+* Java 11 ou superior
+* Conexão com a internet
+* Biblioteca **Gson** adicionada ao projeto
+
+---
+
+### 2️⃣ Clonar o repositório
+
+```bash
+git clone https://github.com/Arthurtrin/Busca-GitHub.git
+```
+
+---
+
+### 3️⃣ Integrar ao seu projeto
+
+Você pode:
+
+* Copiar as classes responsáveis pela requisição HTTP
+* Reutilizar o modelo de usuário (classe que representa o usuário do GitHub)
+* Utilizar a exceção personalizada para tratar erros de busca
+
+---
+
+### 4️⃣ Exemplo de uso
+
+```java
+String json = GithubService.userSearch("octocat");
+try{
+    GithubUser githubUser = new GithubUser(GithubService.jsonToGithubUser(json));
+    System.out.println(githubUser);
+}catch(UserNotFound e){
+    System.out.println(e.getMessage());
+}
+
+```
+
+---
+
+### 5️⃣ Tratamento de exceções
+
+Caso o usuário informado não exista ou a API não retorne sucesso, a aplicação lança uma **exception**, permitindo que o projeto que a utiliza trate o erro da forma que preferir.
+
+---
+
 ## 🛠️ Tecnologias Utilizadas
 
 * **Java**
