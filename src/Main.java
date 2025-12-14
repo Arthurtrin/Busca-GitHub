@@ -1,28 +1,27 @@
-import com.google.gson.Gson;
+import br.com.GithubSearchs.models.GithubService;
+import br.com.GithubSearchs.models.GithubUser;
+import br.com.GithubSearchs.exceptions.UserNotFound;
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.Scanner;
+
+/**
+ * Example of how to use the GitHub Search application.
+ *
+ * <p>This example demonstrates how to:</p>
+ * <ul>
+ *   <li>Request user data from the GitHub API using {@link GithubService}</li>
+ *   <li>Convert the returned JSON into a {@link GithubUser} object</li>
+ *   <li>Handle the {@link UserNotFound} exception when the user does not exist</li>
+ * </ul>
+ *
+ * <p>If the requested user is not found, the application throws a
+ * {@link UserNotFound} exception.</p>
+ */
 
 public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
-        Scanner read = new Scanner(System.in);
-        String userName, search, json;
-        System.out.print("digite o nome do usuario: ");
-        userName = read.nextLine();
-        search = "https://api.github.com/users/" + userName;
-
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(search)).build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        json = response.body();
-        Gson gson = new Gson();
-        GithubSearch githubSearch = gson.fromJson(json, GithubSearch.class);
+        String json = GithubService.userSearch("Arthurtrin");
         try{
-            GithubUser githubUser = new GithubUser(githubSearch);
+            GithubUser githubUser = new GithubUser(GithubService.jsonToGithubUser(json));
             System.out.println(githubUser);
         }
         catch(UserNotFound e){
@@ -30,6 +29,5 @@ public class Main {
         }
 
     }
-
 
 }
